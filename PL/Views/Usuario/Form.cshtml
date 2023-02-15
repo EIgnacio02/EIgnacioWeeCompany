@@ -1,0 +1,172 @@
+﻿@model ML.Usuario
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Formulario Usuario</h2>
+    <div class="row">
+
+        <div class="col-md-12">
+
+            @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data", @Id ="CreateForm" }))
+            {
+                 <div class="form-horizontal">
+
+                    <div class="form-group">
+
+                        <div class="col-md-3" style="display :none;">
+                            
+
+                            @Html.LabelFor(model => model.IdUsuario, new { @class = "" })
+                            @Html.TextBoxFor(model => model.IdUsuario, new { @class = "form-control" })
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Nombre)
+                            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control",@id="txtNombre", @onKeyDown = "return SoloLetras(event,'lblNombre')",onchange="toggleButton()"})
+                            @Html.Label("",null,new{@id="lblNombre"})
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Telefono)
+                            @Html.TextBoxFor(model => model.Telefono, new {id = "txtTelefono", @class = "form-control", @onkeypress = "return SoloNumeros(event,'lblTelefono')",onchange="toggleButton()" })
+                            @Html.Label("",null, new{@id="lblTelefono"})
+
+                            
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Email)
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control",@id="txtEmail", @onkeyup = "ValidateEmail()",onchange="toggleButton()" })
+                            @Html.Label("",null, new{@id="lblEmail"})
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Empresa)
+                            @Html.TextBoxFor(model => model.Empresa, new { @class = "form-control" ,@id="txtEmpresa",onchange="toggleButton()"})
+
+                        </div>
+
+                    </div>
+
+
+                    <br>
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            <input type="submit" value="Guardar" id="btnEnviar" class="btn btn-success" disabled="disabled" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+        //Validacion Solo Numeros
+        function SoloNumeros(e, controlId) {
+
+            var caracter = e.key;
+            if (!/^[0-9]/g.test(caracter)) {
+                $('#' + controlId).text("Solo se aceptan numeros");
+                $('#' + controlId).css({ "color": "red" });
+                return false;
+            }
+            else {
+                $('#' + controlId).text("");
+                return true;
+            }
+        }
+
+        //Validacion Solo letras
+        function SoloLetras(e, controlId) {
+            var caracter = e.key;
+            //var reg = /^[a-z]+$/i;
+            if (/^[a-zA-Z]+$/.test(caracter)) {
+                $('#' + controlId).text("");
+                return true;
+            }
+            else {
+                $('#' + controlId).text("Solo se aceptan letras");
+                $('#' + controlId).css({ "color": "red" });
+                return false;
+            }
+        }
+
+        //Validacion email
+        function ValidateEmail() {
+            var color = "";
+            var email = document.getElementById("txtEmail").value;
+            var lblEmail = document.getElementById("lblEmail");
+            lblEmail.innerHTML = "";
+            var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            if (!expr.test(email)) {
+                color = "red";
+                lblEmail.innerHTML = "email no valido.";
+                lblEmail.style.color = color;
+            }
+        }
+
+
+        function toggleButton()
+
+        {
+
+            var txtNombre = document.getElementById('txtNombre').value;
+            var txtTelefono = document.getElementById('txtTelefono').value;
+            var txtEmail = document.getElementById('txtEmail').value;
+            var txtEmpresa = document.getElementById('txtEmpresa').value;
+
+            if (txtNombre && txtTelefono && txtEmail && txtEmpresa) {
+
+                document.getElementById('btnEnviar').disabled = false;
+
+            } else {
+
+                document.getElementById('btnEnviar').disabled = true;
+
+            }
+
+        }
+
+
+
+    </script>
+
+}
+
+                        
